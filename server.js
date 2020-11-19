@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("./client/node_modules/dotenv/types").config();
 
 const express = require("express");
 const { getPassword, setPassword, deletePassword } = require("./lib/passwords");

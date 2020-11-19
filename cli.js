@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("./client/node_modules/dotenv/types").config();
 const { readCommandLineArguments } = require("./lib/commandLine");
 const { connect, close } = require("./lib/database");
 const { getPassword, setPassword } = require("./lib/passwords");
