@@ -6,7 +6,7 @@ const { connect } = require("./lib/database");
 
 const app = express();
 app.use(express.json());
-const port = 3700;
+const port = process.env.PORT || 3700;
 
 app.get("/api/passwords/:name", async (request, response) => {
   const { name } = request.params;
