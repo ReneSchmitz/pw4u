@@ -60,7 +60,7 @@ app.delete("/api/passwords/:name", async function (request, response) {
 });
 
 app.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname, "client/build", "index.html"));
+  response.sendFile(path.join(__dirname, "index.html"));
 });
 
 async function run() {
