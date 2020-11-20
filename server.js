@@ -1,12 +1,13 @@
-require("dotenv").config();
+require("./client/node_modules/dotenv/types").config();
 
 const express = require("express");
+const path = require("path");
 const { getPassword, setPassword, deletePassword } = require("./lib/passwords");
 const { connect } = require("./lib/database");
 
 const app = express();
 app.use(express.json());
-const port = 3600;
+const port = process.env.PORT || 3700;
 
 app.get("/api/passwords/:name", async (request, response) => {
   const { name } = request.params;
@@ -42,20 +43,31 @@ app.post("/api/passwords", async (request, response) => {
 //   response.send("Got a PUT request at /user");
 // });
 
-app.delete("/api/passwords/:name", function (request, response) {
-    try{
-const {name} = request.params;
-const result = await deletePassword(name);
-if (result.deletedCount === 0){
-    return response.status(404).send("Couldn't find password")
-}
-response.status(200).send("Password deleted");
-    } catch (error) {
-        console.error(error);
-        response
-          .status(500)
-          .send("An unexpected error accured. Please try again later!");
+app.delete("/api/passwords/:name", async function (request, response) {
+  try {
+    const { name } = request.params;
+    const result = await deletePassword(name);
+    if (result.deletedCount === 0) {
+      return response.status(404).send("Couldn't find password");
     }
+    response.status(200).send("Password deleted");
+  } catch (error) {
+    console.error(error);
+    response
+      .status(500)
+      .send("An unexpected error accured. Please try again later!");
+  }
+});
+
+app.use(express.static(path.join(__dirname, "client/build")));
+
+app.use(
+  "/storybook",
+  express.static(path.join(__dirname, "client/storybook-static"))
+);
+
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "index.html"));
 });
 
 async function run() {
