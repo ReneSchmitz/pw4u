@@ -59,6 +59,13 @@ app.delete("/api/passwords/:name", async function (request, response) {
   }
 });
 
+app.use(express.static(path.join(__dirname, "client/build")));
+
+app.use(
+  "/storybook",
+  express.static(path.join(__dirname, "client/storybook-static"))
+);
+
 app.get("*", (request, response) => {
   response.sendFile(path.join(__dirname, "index.html"));
 });
