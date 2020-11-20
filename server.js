@@ -1,6 +1,7 @@
 require("./client/node_modules/dotenv/types").config();
 
 const express = require("express");
+const path = require("path");
 const { getPassword, setPassword, deletePassword } = require("./lib/passwords");
 const { connect } = require("./lib/database");
 
@@ -56,6 +57,10 @@ app.delete("/api/passwords/:name", async function (request, response) {
       .status(500)
       .send("An unexpected error accured. Please try again later!");
   }
+});
+
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 async function run() {
